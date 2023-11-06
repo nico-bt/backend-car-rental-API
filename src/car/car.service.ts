@@ -40,6 +40,11 @@ export class CarService {
   }
 
   async update(id: number, updateCarDto: UpdateCarDto): Promise<Car> {
+    const car = await this.prismaService.car.findUnique({ where: { id } });
+    if (!car) {
+      throw new NotFoundException();
+    }
+
     const updatedCar = await this.prismaService.car.update({
       where: { id },
       data: updateCarDto,
