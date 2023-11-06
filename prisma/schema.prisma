@@ -14,7 +14,7 @@ model Car {
   id         Int      @id @default(autoincrement())
   marca      String
   modelo     String
-  year       String
+  year       Int
   km         Int
   color      String
   ac         Boolean
