@@ -27,6 +27,7 @@ export class CreateCarDto {
   @IsNotEmpty()
   @IsInt()
   @IsPositive()
+  @Max(600000)
   km: number;
 
   @IsString()

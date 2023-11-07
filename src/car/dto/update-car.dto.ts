@@ -27,6 +27,7 @@ export class UpdateCarDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
+  @Max(600000)
   km: number;
 
   @IsString()
