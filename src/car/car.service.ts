@@ -27,7 +27,9 @@ export class CarService {
   }
 
   async findAll(): Promise<Car[]> {
-    const cars = await this.prismaService.car.findMany({});
+    const cars = await this.prismaService.car.findMany({
+      orderBy: { updated_at: 'desc' },
+    });
     return cars;
   }
 
