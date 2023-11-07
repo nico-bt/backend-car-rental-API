@@ -21,7 +21,8 @@ export class UpdateCarDto {
 
   @IsOptional()
   @IsInt()
-  @Min(1900)
+  @Min(2015)
+  @Max(2023)
   year: number;
 
   @IsOptional()
