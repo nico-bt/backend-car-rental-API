@@ -28,3 +28,24 @@ enum CajaType {
   MANUAL
   AUTOMATICO
 }
+
+model Client {
+  id               Int      @id @default(autoincrement())
+  nombre           String
+  apellido         String
+  tipo_documento   DocumentoType
+  nro_documento    String
+  nacionalidad     String
+  direccion        String
+  telefono         String
+  email            String   @unique()
+  fecha_nacimiento DateTime
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+}
+
+enum DocumentoType {
+  PASAPORTE
+  DNI
+  CEDULA
+}
