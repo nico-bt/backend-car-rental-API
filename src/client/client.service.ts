@@ -29,6 +29,7 @@ export class ClientService {
 
   async getAllClients(): Promise<Client[]> {
     const clients = await this.prismaService.client.findMany({
+      where: { is_deleted: false },
       orderBy: { updated_at: 'desc' },
     });
     return clients;
@@ -66,8 +67,9 @@ export class ClientService {
     if (!client) {
       throw new NotFoundException();
     }
-    const deletedClient = await this.prismaService.client.delete({
+    const deletedClient = await this.prismaService.client.update({
       where: { id },
+      data: { is_deleted: true },
     });
 
     return deletedClient;

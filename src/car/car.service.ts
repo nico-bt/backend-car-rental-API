@@ -28,6 +28,7 @@ export class CarService {
 
   async findAll(): Promise<Car[]> {
     const cars = await this.prismaService.car.findMany({
+      where: { is_deleted: false },
       orderBy: { updated_at: 'desc' },
     });
     return cars;
@@ -59,8 +60,9 @@ export class CarService {
     if (!car) {
       throw new NotFoundException();
     }
-    const deletedCar = await this.prismaService.car.delete({
+    const deletedCar = await this.prismaService.car.update({
       where: { id },
+      data: { is_deleted: true },
     });
 
     return deletedCar;

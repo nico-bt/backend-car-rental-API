@@ -22,6 +22,7 @@ model Car {
   cambios    CajaType
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  is_deleted Boolean  @default(false)
 }
 
 enum CajaType {
@@ -30,7 +31,7 @@ enum CajaType {
 }
 
 model Client {
-  id               Int      @id @default(autoincrement())
+  id               Int           @id @default(autoincrement())
   nombre           String
   apellido         String
   tipo_documento   DocumentoType
@@ -38,10 +39,11 @@ model Client {
   nacionalidad     String
   direccion        String
   telefono         String
-  email            String   @unique()
+  email            String        @unique()
   fecha_nacimiento DateTime
-  created_at       DateTime @default(now())
-  updated_at       DateTime @updatedAt
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+  is_deleted       Boolean       @default(false)
 }
 
 enum DocumentoType {
