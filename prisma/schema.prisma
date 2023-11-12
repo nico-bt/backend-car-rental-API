@@ -46,6 +46,7 @@ model Client {
   fecha_nacimiento DateTime
   created_at       DateTime      @default(now())
   updated_at       DateTime      @updatedAt
+  is_renting       Boolean       @default(false)
   is_deleted       Boolean       @default(false)
   Transaction      Transaction[]
 }
