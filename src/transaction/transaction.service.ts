@@ -20,7 +20,7 @@ export class TransactionService {
     }
 
     const isValidClient = await this.prismaService.client.findUnique({
-      where: { id: clientId, is_deleted: false },
+      where: { id: clientId, is_deleted: false, is_renting: false },
     });
     if (!isValidClient) {
       throw new BadRequestException('Not a valid Client');
@@ -46,9 +46,15 @@ export class TransactionService {
       },
     });
 
-    const setCarToRented = await this.prismaService.car.update({
+    // Set car to rented
+    await this.prismaService.car.update({
       where: { id: carId },
       data: { is_rented: true },
+    });
+    // Set client to renting
+    await this.prismaService.client.update({
+      where: { id: clientId },
+      data: { is_renting: true },
     });
 
     return transaction;
