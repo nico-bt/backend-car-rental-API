@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateTransactionDto } from './create-transaction.dto';
+import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Transaction } from '@prisma/client';
 
 @Injectable()
@@ -65,5 +69,104 @@ export class TransactionService {
       include: { client: {}, car: {} },
     });
     return transactions;
+  }
+
+  async getTransactionById(id: number) {
+    const transaction = await this.prismaService.transaction.findUnique({
+      where: { id },
+      include: { client: {}, car: {} },
+    });
+    if (!transaction) {
+      throw new NotFoundException();
+    }
+    return transaction;
+  }
+
+  async update(
+    id: number,
+    updateTransactionDto: CreateTransactionDto,
+  ): Promise<Transaction> {
+    const { carId, clientId, start_date, finish_date } = updateTransactionDto;
+    let carPrice: number;
+
+    const transaction = await this.prismaService.transaction.findUnique({
+      where: { id },
+    });
+
+    if (clientId !== transaction.clientId) {
+      const client = await this.prismaService.client.findUnique({
+        where: { id: clientId, is_renting: false, is_deleted: false },
+      });
+      if (!client) {
+        throw new NotFoundException(
+          'Client not found or is already renting a car',
+        );
+      }
+
+      // Free the actual client in transaction and assign the new client to the updateTransactionDto
+      await this.prismaService.client.update({
+        where: { id: transaction.clientId },
+        data: { is_renting: false },
+      });
+      updateTransactionDto.clientId = client.id;
+    }
+
+    if (carId !== transaction.carId) {
+      const car = await this.prismaService.car.findUnique({
+        where: { id: carId, is_rented: false, is_deleted: false },
+      });
+      if (!car) {
+        throw new NotFoundException('Car not found or is already rented');
+      }
+
+      // Free the actual car in transaction and assign the new car to the updateTransactionDto
+      await this.prismaService.car.update({
+        where: { id: transaction.carId },
+        data: { is_rented: false },
+      });
+      updateTransactionDto.carId = car.id;
+
+      carPrice = car.price;
+    } else {
+      const car = await this.prismaService.car.findUnique({
+        where: { id: carId },
+      });
+      carPrice = car.price;
+    }
+
+    const daysOfRental =
+      (new Date(finish_date).getTime() - new Date(start_date).getTime()) /
+      (1000 * 60 * 60 * 24);
+
+    if (daysOfRental < 0) {
+      throw new BadRequestException(
+        'finish_date must be greater than start_date',
+      );
+    }
+
+    const updatedTransaction = await this.prismaService.transaction.update({
+      where: { id },
+      data: {
+        carId: updateTransactionDto.carId,
+        clientId: updateTransactionDto.clientId,
+        start_date: updateTransactionDto.start_date,
+        finish_date: updateTransactionDto.finish_date,
+        price_per_day: carPrice,
+        total_price: carPrice * daysOfRental,
+      },
+    });
+
+    // Set car to rented
+    await this.prismaService.car.update({
+      where: { id: carId },
+      data: { is_rented: true },
+    });
+    // Set client to renting
+    await this.prismaService.client.update({
+      where: { id: clientId },
+      data: { is_renting: true },
+    });
+
+    return updatedTransaction;
   }
 }
