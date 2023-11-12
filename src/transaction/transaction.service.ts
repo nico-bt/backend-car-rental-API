@@ -26,10 +26,9 @@ export class TransactionService {
       throw new BadRequestException('Not a valid Client');
     }
 
-    const daysOfRental = Math.ceil(
-      new Date(finish_date).getTime() -
-        new Date(start_date).getTime() / (1000 * 60 * 60 * 24),
-    );
+    const daysOfRental =
+      (new Date(finish_date).getTime() - new Date(start_date).getTime()) /
+      (1000 * 60 * 60 * 24);
     if (daysOfRental < 1) {
       throw new BadRequestException(
         'finish_date must be greater than start_date',
@@ -53,5 +52,10 @@ export class TransactionService {
     });
 
     return transaction;
+  }
+
+  async getAllTransactions(): Promise<Transaction[]> {
+    const transactions = await this.prismaService.transaction.findMany();
+    return transactions;
   }
 }
