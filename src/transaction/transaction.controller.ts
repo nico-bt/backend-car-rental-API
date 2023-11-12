@@ -23,10 +23,10 @@ export class TransactionController {
     return this.transactionService.createTransaction(createTransaction);
   }
 
-  //   @Get()
-  //   findAll(): Promise<Client[]> {
-  //     return this.clientService.getAllClients();
-  //   }
+  @Get()
+  findAll(): Promise<Transaction[]> {
+    return this.transactionService.getAllTransactions();
+  }
 
   //   @Get(':id')
   //   findClientById(@Param('id', ParseIntPipe) id: number): Promise<Client> {
