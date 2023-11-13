@@ -29,7 +29,7 @@ export class CarService {
   async findAll(): Promise<Car[]> {
     const cars = await this.prismaService.car.findMany({
       where: { is_deleted: false },
-      orderBy: { updated_at: 'desc' },
+      orderBy: [{ is_rented: 'asc' }, { updated_at: 'desc' }],
     });
     return cars;
   }
