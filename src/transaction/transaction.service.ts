@@ -64,8 +64,11 @@ export class TransactionService {
     return transaction;
   }
 
-  async getAllTransactions(): Promise<Transaction[]> {
+  async getAllTransactions(active?: boolean): Promise<Transaction[]> {
+    const filter = active ? { is_active: active } : {};
+
     const transactions = await this.prismaService.transaction.findMany({
+      where: filter,
       include: { client: {}, car: {} },
       orderBy: { updated_at: 'desc' },
     });
@@ -169,5 +172,32 @@ export class TransactionService {
     });
 
     return updatedTransaction;
+  }
+
+  async finishTransaction(id: number): Promise<Transaction> {
+    const transaction = await this.prismaService.transaction.findUnique({
+      where: { id },
+    });
+
+    if (!transaction) {
+      throw new NotFoundException();
+    }
+
+    // Free car and client:
+    // Set car to NOT rented
+    await this.prismaService.car.update({
+      where: { id: transaction.carId },
+      data: { is_rented: false },
+    });
+    // Set client to NOT renting
+    await this.prismaService.client.update({
+      where: { id: transaction.clientId },
+      data: { is_renting: false },
+    });
+
+    return this.prismaService.transaction.update({
+      where: { id },
+      data: { is_active: false },
+    });
   }
 }

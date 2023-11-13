@@ -5,8 +5,10 @@ import {
   Get,
   Param,
   ParseIntPipe,
-  Delete,
   Put,
+  Patch,
+  Query,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
@@ -24,8 +26,10 @@ export class TransactionController {
   }
 
   @Get()
-  findAll(): Promise<Transaction[]> {
-    return this.transactionService.getAllTransactions();
+  findAll(
+    @Query('active', new ParseBoolPipe({ optional: true })) active?: boolean,
+  ): Promise<Transaction[]> {
+    return this.transactionService.getAllTransactions(active);
   }
 
   @Get(':id')
@@ -43,8 +47,10 @@ export class TransactionController {
     return this.transactionService.update(id, updateTransaction);
   }
 
-  //   @Delete(':id')
-  //   remove(@Param('id', ParseIntPipe) id: number): Promise<Client> {
-  //     return this.clientService.remove(id);
-  //   }
+  @Patch(':id')
+  finishTransaction(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Transaction> {
+    return this.transactionService.finishTransaction(id);
+  }
 }
