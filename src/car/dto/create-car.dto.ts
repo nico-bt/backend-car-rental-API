@@ -10,6 +10,12 @@ import {
   Min,
 } from 'class-validator';
 
+const MIN_YEAR_CARMODEL = 2015;
+const MAX_YEAR_CARMODEL = new Date().getFullYear();
+const MAX_KM_CAR = 400000;
+const MIN_NUM_OF_PASSENGERS = 1;
+const MAX_NUM_OF_PASSENGERS = 10;
+
 export class CreateCarDto {
   @IsString()
   @IsNotEmpty()
@@ -21,14 +27,14 @@ export class CreateCarDto {
 
   @IsNotEmpty()
   @IsInt()
-  @Min(2015)
-  @Max(2023)
+  @Min(MIN_YEAR_CARMODEL)
+  @Max(MAX_YEAR_CARMODEL)
   year: number;
 
   @IsNotEmpty()
   @IsInt()
   @IsPositive()
-  @Max(600000)
+  @Max(MAX_KM_CAR)
   km: number;
 
   @IsString()
@@ -41,8 +47,8 @@ export class CreateCarDto {
 
   @IsNotEmpty()
   @IsInt()
-  @Min(1)
-  @Max(10)
+  @Min(MIN_NUM_OF_PASSENGERS)
+  @Max(MAX_NUM_OF_PASSENGERS)
   pasajeros: number;
 
   @IsNotEmpty()
