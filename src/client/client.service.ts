@@ -30,7 +30,7 @@ export class ClientService {
   async getAllClients(): Promise<Client[]> {
     const clients = await this.prismaService.client.findMany({
       where: { is_deleted: false },
-      orderBy: { updated_at: 'desc' },
+      orderBy: [{ is_renting: 'asc' }, { updated_at: 'desc' }],
     });
     return clients;
   }

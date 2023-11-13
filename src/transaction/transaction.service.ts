@@ -67,6 +67,7 @@ export class TransactionService {
   async getAllTransactions(): Promise<Transaction[]> {
     const transactions = await this.prismaService.transaction.findMany({
       include: { client: {}, car: {} },
+      orderBy: { updated_at: 'desc' },
     });
     return transactions;
   }
