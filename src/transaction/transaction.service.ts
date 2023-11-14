@@ -70,7 +70,7 @@ export class TransactionService {
     const transactions = await this.prismaService.transaction.findMany({
       where: filter,
       include: { client: {}, car: {} },
-      orderBy: { updated_at: 'desc' },
+      orderBy: [{ is_active: 'desc' }, { updated_at: 'desc' }],
     });
     return transactions;
   }
