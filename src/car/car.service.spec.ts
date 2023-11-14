@@ -18,6 +18,7 @@ describe('CarService', () => {
     ac: true,
     pasajeros: 5,
     cambios: CajaType.MANUAL,
+    price: 24,
   };
 
   const mockCarResponse = {
@@ -65,16 +66,7 @@ describe('CarService', () => {
       await carService.create(mockCar);
 
       expect(mockPrismaCarCreate).toHaveBeenCalledWith({
-        data: {
-          marca: mockCar.marca,
-          modelo: mockCar.modelo,
-          year: mockCar.year,
-          km: mockCar.km,
-          color: mockCar.color,
-          ac: mockCar.ac,
-          pasajeros: mockCar.pasajeros,
-          cambios: mockCar.cambios,
-        },
+        data: mockCar,
       });
     });
   });
@@ -149,16 +141,19 @@ describe('CarService', () => {
   });
 
   describe('remove', () => {
-    it('should call the prisma car.delete with the id that is passed', async () => {
-      const mockPrismaDelete = jest.fn().mockReturnValue(mockCarResponse);
+    it('should call the prisma car.findUnique with the id that is passed and mark is_deleted=true (soft delete implementation)', async () => {
+      const mockPrismaUpdate = jest.fn().mockReturnValue(mockCarResponse);
 
       jest
-        .spyOn(prismaService.car, 'delete')
-        .mockImplementation(mockPrismaDelete);
+        .spyOn(prismaService.car, 'update')
+        .mockImplementation(mockPrismaUpdate);
 
       await carService.remove(6);
 
-      expect(mockPrismaDelete).toHaveBeenCalledWith({ where: { id: 6 } });
+      expect(mockPrismaUpdate).toHaveBeenCalledWith({
+        where: { id: 6 },
+        data: { is_deleted: true },
+      });
     });
 
     it('should throw an error if no car is found with the passed id', async () => {
