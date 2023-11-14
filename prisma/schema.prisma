@@ -24,7 +24,7 @@ model Car {
   updated_at  DateTime      @updatedAt
   is_deleted  Boolean       @default(false)
   is_rented   Boolean       @default(false)
-  price       Float         @default(20)
+  price       Float
   Transaction Transaction[]
 }
 

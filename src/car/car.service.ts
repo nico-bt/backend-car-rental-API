@@ -9,19 +9,8 @@ export class CarService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(createCarDto: CreateCarDto): Promise<Car> {
-    const { marca, modelo, year, km, color, ac, pasajeros, cambios } =
-      createCarDto;
     const newCar = await this.prismaService.car.create({
-      data: {
-        marca,
-        modelo,
-        year,
-        km,
-        color,
-        ac,
-        pasajeros,
-        cambios,
-      },
+      data: createCarDto,
     });
     return newCar;
   }

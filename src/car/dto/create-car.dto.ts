@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsPositive,
   IsString,
   Max,
@@ -15,6 +16,7 @@ const MAX_YEAR_CARMODEL = new Date().getFullYear();
 const MAX_KM_CAR = 400000;
 const MIN_NUM_OF_PASSENGERS = 1;
 const MAX_NUM_OF_PASSENGERS = 10;
+const MAX_PRICE = 10000;
 
 export class CreateCarDto {
   @IsString()
@@ -54,4 +56,10 @@ export class CreateCarDto {
   @IsNotEmpty()
   @IsEnum(CajaType)
   cambios: CajaType;
+
+  @IsNotEmpty()
+  @IsNumber()
+  @IsPositive()
+  @Max(MAX_PRICE)
+  price: number;
 }
