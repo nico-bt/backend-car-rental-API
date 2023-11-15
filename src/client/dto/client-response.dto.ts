@@ -1,9 +1,11 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { DocumentoType } from '@prisma/client';
 
 export class ClientResponseDto {
   id: number;
   nombre: string;
   apellido: string;
+  @ApiProperty({ enum: DocumentoType })
   tipo_documento: DocumentoType;
   nro_documento: string;
   nacionalidad: string;

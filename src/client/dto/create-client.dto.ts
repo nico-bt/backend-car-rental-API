@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { DocumentoType } from '@prisma/client';
 import {
   IsDateString,
@@ -18,6 +19,7 @@ export class CreateClientDto {
 
   @IsNotEmpty()
   @IsEnum(DocumentoType)
+  @ApiProperty({ enum: DocumentoType })
   tipo_documento: DocumentoType;
 
   @IsNotEmpty()

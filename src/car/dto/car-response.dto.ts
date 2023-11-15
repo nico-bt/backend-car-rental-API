@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { CajaType } from '@prisma/client';
 
 export class CarResponseDto {
@@ -9,6 +10,7 @@ export class CarResponseDto {
   color: string;
   ac: boolean;
   pasajeros: number;
+  @ApiProperty({ enum: CajaType })
   cambios: CajaType;
   price: number;
   created_at: Date;

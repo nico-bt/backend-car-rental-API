@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { CajaType } from '@prisma/client';
 import {
   IsBoolean,
@@ -55,6 +56,7 @@ export class CreateCarDto {
 
   @IsNotEmpty()
   @IsEnum(CajaType)
+  @ApiProperty({ enum: CajaType })
   cambios: CajaType;
 
   @IsNotEmpty()
