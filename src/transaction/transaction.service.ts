@@ -97,6 +97,10 @@ export class TransactionService {
       where: { id },
     });
 
+    if (!transaction) {
+      throw new NotFoundException();
+    }
+
     if (clientId !== transaction.clientId) {
       const client = await this.prismaService.client.findUnique({
         where: { id: clientId, is_renting: false, is_deleted: false },
