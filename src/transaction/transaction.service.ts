@@ -6,6 +6,10 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { Transaction } from '@prisma/client';
+import {
+  CreateTransactionResponseDto,
+  TransactionResponseDto,
+} from './dto/transaction-response.dto';
 
 @Injectable()
 export class TransactionService {
@@ -64,8 +68,11 @@ export class TransactionService {
     return transaction;
   }
 
-  async getAllTransactions(active?: boolean): Promise<Transaction[]> {
+  async getAllTransactions(
+    active?: boolean,
+  ): Promise<TransactionResponseDto[]> {
     const filter = active ? { is_active: active } : {};
+    console.log(active);
 
     const transactions = await this.prismaService.transaction.findMany({
       where: filter,
@@ -75,7 +82,7 @@ export class TransactionService {
     return transactions;
   }
 
-  async getTransactionById(id: number) {
+  async getTransactionById(id: number): Promise<TransactionResponseDto> {
     const transaction = await this.prismaService.transaction.findUnique({
       where: { id },
       include: { client: {}, car: {} },
@@ -89,7 +96,7 @@ export class TransactionService {
   async update(
     id: number,
     updateTransactionDto: CreateTransactionDto,
-  ): Promise<Transaction> {
+  ): Promise<CreateTransactionResponseDto> {
     const { carId, clientId, start_date, finish_date } = updateTransactionDto;
     let carPrice: number;
 
@@ -178,7 +185,7 @@ export class TransactionService {
     return updatedTransaction;
   }
 
-  async finishTransaction(id: number): Promise<Transaction> {
+  async finishTransaction(id: number): Promise<CreateTransactionResponseDto> {
     const transaction = await this.prismaService.transaction.findUnique({
       where: { id },
     });

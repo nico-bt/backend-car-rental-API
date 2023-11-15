@@ -2,7 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TransactionController } from './transaction.controller';
 import { TransactionService } from './transaction.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { Transaction } from '@prisma/client';
+import {
+  CreateTransactionResponseDto,
+  TransactionResponseDto,
+} from './dto/transaction-response.dto';
 
 const createTransactionDto: CreateTransactionDto = {
   clientId: 22,
@@ -11,7 +14,7 @@ const createTransactionDto: CreateTransactionDto = {
   finish_date: '2023-11-20T03:00:00.000Z',
 };
 
-const mockTransactionResponse: Transaction = {
+const mockCreateTransactionResponse: CreateTransactionResponseDto = {
   id: 16,
   clientId: 22,
   carId: 76,
@@ -23,6 +26,52 @@ const mockTransactionResponse: Transaction = {
   created_at: new Date(),
   updated_at: new Date(),
   is_deleted: false,
+};
+
+const mockTransactionResponse: TransactionResponseDto = {
+  id: 16,
+  clientId: 22,
+  carId: 76,
+  start_date: new Date('2023-11-14T03:00:00.000Z'),
+  finish_date: new Date('2023-11-20T03:00:00.000Z'),
+  price_per_day: 75,
+  total_price: 450,
+  is_active: true,
+  created_at: new Date(),
+  updated_at: new Date(),
+  is_deleted: false,
+  client: {
+    id: 22,
+    nombre: 'Carlos',
+    apellido: 'Roa',
+    tipo_documento: 'DNI',
+    nro_documento: '20567897',
+    nacionalidad: 'Argentina',
+    direccion: 'San Martin 456',
+    telefono: '4789987',
+    email: 'c.roa@mail.com',
+    fecha_nacimiento: new Date('1969-04-15T04:00:00.000Z'),
+    created_at: new Date('2023-11-13T04:07:11.449Z'),
+    updated_at: new Date('2023-11-14T01:28:48.952Z'),
+    is_renting: true,
+    is_deleted: false,
+  },
+  car: {
+    id: 76,
+    marca: 'Ferrari',
+    modelo: '458 Spider',
+    year: 2021,
+    km: 14420,
+    color: 'rojo',
+    ac: true,
+    pasajeros: 2,
+    cambios: 'MANUAL',
+    created_at: new Date('2023-11-10T20:42:19.399Z'),
+    updated_at: new Date('2023-11-14T01:28:48.874Z'),
+    is_deleted: false,
+    is_rented: true,
+    price: 75,
+  },
 };
 
 describe('TransactionController', () => {
@@ -59,11 +108,11 @@ describe('TransactionController', () => {
     it('should create a new transaction', async () => {
       jest
         .spyOn(transactionService, 'createTransaction')
-        .mockResolvedValue(mockTransactionResponse);
+        .mockResolvedValue(mockCreateTransactionResponse);
 
       const result = await transactionController.create(createTransactionDto);
 
-      expect(result).toBe(mockTransactionResponse);
+      expect(result).toBe(mockCreateTransactionResponse);
       expect(transactionService.createTransaction).toHaveBeenCalledWith(
         createTransactionDto,
       );
@@ -72,7 +121,9 @@ describe('TransactionController', () => {
 
   describe('findAll', () => {
     it('should return an array of transactions', async () => {
-      const mockTransactions: Transaction[] = [mockTransactionResponse];
+      const mockTransactions: TransactionResponseDto[] = [
+        mockTransactionResponse,
+      ];
 
       jest
         .spyOn(transactionService, 'getAllTransactions')
@@ -120,40 +171,3 @@ describe('TransactionController', () => {
     });
   });
 });
-
-// **********************************************
-
-// });
-
-// client: {
-//   id: 22,
-//   nombre: 'Carlos',
-//   apellido: 'Roa',
-//   tipo_documento: 'DNI',
-//   nro_documento: '20567897',
-//   nacionalidad: 'Argentina',
-//   direccion: 'San Martin 456',
-//   telefono: '4789987',
-//   email: 'c.roa@mail.com',
-//   fecha_nacimiento: new Date(),
-//   created_at: new Date(),
-//   updated_at: new Date(),
-//   is_renting: true,
-//   is_deleted: false,
-// },
-// car: {
-//   id: 76,
-//   marca: 'Ferrari',
-//   modelo: '458 Spider',
-//   year: 2021,
-//   km: 14420,
-//   color: 'rojo',
-//   ac: true,
-//   pasajeros: 2,
-//   cambios: 'MANUAL',
-//   created_at: new Date(),
-//   updated_at: new Date(),
-//   is_deleted: false,
-//   is_rented: true,
-//   price: 75,
-// },
