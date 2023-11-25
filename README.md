@@ -67,14 +67,14 @@ $ docker compose down
 
 ```
 
-## Test
+## Tests
 
 ```bash
 # unit tests
 $ npm run test
 
 # e2e tests
-# First you need to start a test db - required Docker installed on yuor pc
+# First you need to start a test db - required Docker installed on your pc
 $ npm run pretest:e2e
 $ npm run test:e2e
 
