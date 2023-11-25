@@ -57,12 +57,10 @@ $ git clone --single-branch --branch development https://github.com/nico-bt/back
 $ npm install
 
 # setup local DB - You need to have Docker installed on your pc
-$ npm run prestart:dev
-
-# run Nest app
+# Will run previously "prestart:dev" script, setting the docker container:
 $ npm run start:dev
 
-# Once you finish, to put down container
+# Once you finish, to put down container:
 $ docker compose down
 
 ```
@@ -75,7 +73,6 @@ $ npm run test
 
 # e2e tests
 # First you need to start a test db - required Docker installed on your pc
-$ npm run pretest:e2e
+# Will previously run the "pretest:e2e" script, setting the docker container:
 $ npm run test:e2e
-
 ```
