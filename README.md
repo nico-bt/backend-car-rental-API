@@ -1,73 +1,81 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
+Rest API for car rental app.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Brief comment on business logic:  
+It doesn't align with calendar-based planning and/or combinatorial booking/logic of reservations/dates.  
+It's designed to function in real-time within the office.  
 
-## Installation
+Transactions are recorded based on the entry/exit of cars.  
+When a car and a customer exit, both resources are flagged with a boolean (is_rented, is_renting) to disable them for future transactions until the ongoing transaction is completed, and then they are re-enabled.  
 
+It's similar to the check-in/check-out process of items from a warehouse.
+
+## Techs used
+- Nest.js
+- Prisma as ORM
+- Cloud Postgres db in Supabase for the live version
+- Local db instance with Docker to run locally and to run e2e tests
+
+## Live deploys to see UI and interaction:
+- Frontend: https://frontend-car-rental-ivory.vercel.app/
+- API: https://car-rental-api.adaptable.app/api/clients
+
+(Obs: The free tier goes to sleep after a while, and the first load may take a few seconds.)
+
+## API docs and Endpoints
+Full docs with body requests and responses. 
+API Docs: https://car-rental-api.adaptable.app/docs
+
+### API Endpoints:
+Basic routes, for more info see the previous link
+| Resource     | HTTP Method | Endpoint                       | Description                                |
+|:------------:|-------------|--------------------------------|--------------------------------------------|
+|     Cars     | POST        | /api/car                       | Create a new car                           |
+|              | GET         | /api/car                       | Get a list of cars                         |
+|              | GET         | /api/car/{id}                  | Get details of a specific car by ID        |
+|              | PATCH       | /api/car/{id}                  | Update specific details of a car by ID     |
+|              | DELETE      | /api/car/{id}                  | Delete a specific car by ID                |
+|--------------|-------------|--------------------------------|--------------------------------------------|
+|   Clients    | POST        | /api/clients                   | Create a new client                        |
+|              | GET         | /api/clients                   | Get a list of clients                      |
+|              | GET         | /api/clients/{id}              | Get details of a specific client by ID     |
+|              | PATCH       | /api/clients/{id}              | Update specific details of a client by ID  |
+|              | DELETE      | /api/clients/{id}              | Delete a specific client by ID             |
+|--------------|-------------|--------------------------------|--------------------------------------------|
+| Transactions | POST        | /api/transactions              | Create a new transaction                   |
+|              | GET         | /api/transactions              | Get a list of all transactions             |
+|              | GET         | /api/transactions?active=true  | Get a list of active transactions only                |
+|              | GET         | /api/transactions/{id}         | Get details of a specific transaction by ID|
+|              | PUT         | /api/transactions/{id}         | Replace a specific transaction by ID       |
+|              | PATCH       | /api/transactions/{id}         | Finish a transaction and free the associated car and client|
+
+
+## Running locally
 ```bash
+# clone repo and install dependencies
+$ git clone --single-branch --branch development https://github.com/nico-bt/backend-car-rental-API.git
 $ npm install
-```
 
-## Running the app
+# setup local DB - You need to have Docker installed on your pc
+$ npm run prestart:dev
 
-```bash
-# development
-$ npm run start
-
-# watch mode
+# run Nest app
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
+# Once you finish, to put down container
+$ docker compose down
+
 ```
 
-## Test
+## Tests
 
 ```bash
 # unit tests
 $ npm run test
 
 # e2e tests
+# First you need to start a test db - required Docker installed on your pc
+$ npm run pretest:e2e
 $ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
