@@ -72,7 +72,6 @@ export class TransactionService {
     active?: boolean,
   ): Promise<TransactionResponseDto[]> {
     const filter = active ? { is_active: active } : {};
-    console.log(active);
 
     const transactions = await this.prismaService.transaction.findMany({
       where: filter,
