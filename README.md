@@ -1,14 +1,16 @@
 ## Description
-Rest API for car rental app.
+Rest API for car rental app.  
+CRUD operations for Transactions, Cars and Clients.
 
 Brief comment on business logic:  
+Transactions are recorded based on the entry/exit of cars.  
+When a car and a customer exit, both resources are flagged with a boolean (is_rented, is_renting) to disable them for future transactions until the ongoing transaction is completed, and then they are re-enabled. 
+
 It doesn't align with calendar-based planning and/or combinatorial booking/logic of reservations/dates.  
 It's designed to function in real-time within the office.  
 
-Transactions are recorded based on the entry/exit of cars.  
-When a car and a customer exit, both resources are flagged with a boolean (is_rented, is_renting) to disable them for future transactions until the ongoing transaction is completed, and then they are re-enabled.  
-
-It's similar to the check-in/check-out process of items from a warehouse.
+It's similar to the check-in/check-out process of items from a warehouse.  
+Clients can only rent one car at a time.
 
 ## Techs used
 - Nest.js
@@ -23,8 +25,8 @@ It's similar to the check-in/check-out process of items from a warehouse.
 (Obs: The free tier goes to sleep after a while, and the first load may take a few seconds.)
 
 ## API docs and Endpoints
-Full docs with body requests and responses. 
-API Docs: https://car-rental-api.adaptable.app/docs
+Full docs with body requests and responses.  
+🡆 API Docs: https://car-rental-api.adaptable.app/docs
 
 ### API Endpoints:
 Basic routes, for more info see the previous link
@@ -51,18 +53,21 @@ Basic routes, for more info see the previous link
 
 
 ## Running locally
+You need to have installed Docker, to run a local postgres database
 ```bash
 # clone repo and install dependencies
 $ git clone --single-branch --branch development https://github.com/nico-bt/backend-car-rental-API.git
 $ npm install
 
-# setup local DB - You need to have Docker installed on your pc
-# Will run previously "prestart:dev" script, setting the docker container:
+# Start local database with docker
+$ npm run db:start
+
+# Start the app
 $ npm run start:dev
 
 # Once you finish, to put down container:
+# (will terminate both dev and test databases)
 $ docker compose down
-
 ```
 
 ## Tests
@@ -72,7 +77,10 @@ $ docker compose down
 $ npm run test
 
 # e2e tests
-# First you need to start a test db - required Docker installed on your pc
-# Will previously run the "pretest:e2e" script, setting the docker container:
+# You need the local database running of the previous step
+# If it is running do nothing, else run "npm run db:start" first
 $ npm run test:e2e
 ```
+
+## Entity Relationship Diagram
+![Entities Diagram](./car_rent_erd.jpeg)
