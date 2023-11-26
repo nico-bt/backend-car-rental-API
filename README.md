@@ -84,3 +84,6 @@ $ npm run test:e2e
 
 ## Entity Relationship Diagram
 ![Entities Diagram](./car_rent_erd.jpeg)
+
+To also run frontend locally:  
+https://github.com/nico-bt/frontend-car-rental/blob/development/README.md
