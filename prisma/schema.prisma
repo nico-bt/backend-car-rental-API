@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Car {
+  id          Int           @id @default(autoincrement())
+  marca       String
+  modelo      String
+  year        Int
+  km          Int
+  color       String
+  ac          Boolean
+  pasajeros   Int
+  cambios     CajaType
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  is_deleted  Boolean       @default(false)
+  is_rented   Boolean       @default(false)
+  price       Float
+  Transaction Transaction[]
+}
+
+enum CajaType {
+  MANUAL
+  AUTOMATICO
+}
+
+model Client {
+  id               Int           @id @default(autoincrement())
+  nombre           String
+  apellido         String
+  tipo_documento   DocumentoType
+  nro_documento    String
+  nacionalidad     String
+  direccion        String
+  telefono         String
+  email            String        @unique()
+  fecha_nacimiento DateTime
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+  is_renting       Boolean       @default(false)
+  is_deleted       Boolean       @default(false)
+  Transaction      Transaction[]
+}
+
+enum DocumentoType {
+  PASAPORTE
+  DNI
+  CEDULA
+}
+
+model Transaction {
+  id            Int      @id @default(autoincrement())
+
+  clientId      Int
+  client        Client   @relation(fields: [clientId], references: [id])
+  
+  carId         Int
+  car           Car      @relation(fields: [carId], references: [id])
+  
+  start_date    DateTime @default(now())
+  finish_date   DateTime
+  price_per_day Float
+  total_price   Float
+  is_active     Boolean  @default(true)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  is_deleted    Boolean  @default(false)
+}
