@@ -18,9 +18,11 @@ Clients can only rent one car at a time.
 - Cloud Postgres db in Supabase for the live version
 - Local db instance with Docker to run locally and to run e2e tests
 
-## Live deploys to see UI and interaction:
+## Live deploys:
 - Frontend: https://frontend-car-rental-ivory.vercel.app/
 - API: https://car-rental-api.adaptable.app/api/clients
+
+  - Frontend code: https://github.com/nico-bt/frontend-car-rental/tree/main
 
 (Obs: The free tier goes to sleep after a while, and the first load may take a few seconds.)
 
