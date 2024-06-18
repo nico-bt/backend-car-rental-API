@@ -33,19 +33,19 @@ Full docs with body requests and responses.
 ### API Endpoints:
 Basic routes, for more info see the previous link
 | Resource     | HTTP Method | Endpoint                       | Description                                |
-|:------------:|-------------|--------------------------------|--------------------------------------------|
+|:-----------:|-------------|------------------------------|--------------------------------------------|
 |     Cars     | POST        | /api/car                       | Create a new car                           |
 |              | GET         | /api/car                       | Get a list of cars                         |
 |              | GET         | /api/car/{id}                  | Get details of a specific car by ID        |
 |              | PATCH       | /api/car/{id}                  | Update specific details of a car by ID     |
 |              | DELETE      | /api/car/{id}                  | Delete a specific car by ID                |
-|--------------|-------------|--------------------------------|--------------------------------------------|
+|-------------|-------------|------------------------------|--------------------------------------------|
 |   Clients    | POST        | /api/clients                   | Create a new client                        |
 |              | GET         | /api/clients                   | Get a list of clients                      |
 |              | GET         | /api/clients/{id}              | Get details of a specific client by ID     |
 |              | PATCH       | /api/clients/{id}              | Update specific details of a client by ID  |
 |              | DELETE      | /api/clients/{id}              | Delete a specific client by ID             |
-|--------------|-------------|--------------------------------|--------------------------------------------|
+|-------------|-------------|------------------------------|--------------------------------------------|
 | Transactions | POST        | /api/transactions              | Create a new transaction                   |
 |              | GET         | /api/transactions              | Get a list of all transactions             |
 |              | GET         | /api/transactions?active=true  | Get a list of active transactions only                |
