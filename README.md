@@ -26,6 +26,9 @@ Clients can only rent one car at a time.
 
 (Obs: The free tier goes to sleep after a while, and the first load may take a few seconds.)
 
+## Entity Relationship Diagram
+![Entities Diagram](./car_rent_erd.jpeg)
+
 ## API docs and Endpoints
 Full docs with body requests and responses.  
 🡆 API Docs: https://car-rental-api.adaptable.app/docs
@@ -84,7 +87,6 @@ $ npm run test
 $ npm run test:e2e
 ```
 
-## Entity Relationship Diagram
-![Entities Diagram](./car_rent_erd.jpeg)
+
 
 
