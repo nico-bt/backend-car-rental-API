@@ -20,7 +20,7 @@ Clients can only rent one car at a time.
 
 ## Live deploys:
 - Frontend: https://frontend-car-rental-ivory.vercel.app/
-- API: https://car-rental-api.adaptable.app/api/clients
+- API: https://bewildered-rozamond-nico-bat-4a2e4923.koyeb.app/api/clients
 
   - Frontend code: https://github.com/nico-bt/frontend-car-rental/tree/main
 
