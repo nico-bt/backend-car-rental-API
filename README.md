@@ -19,7 +19,7 @@ Clients can only rent one car at a time.
 - Local db instance with Docker to run locally and to run e2e tests
 
 ## Live deploys:
-- Frontend: https://frontend-car-rental-ivory.vercel.app/
+- Frontend: https://car-rental-xi-bay.vercel.app/
 - API: https://bewildered-rozamond-nico-bat-4a2e4923.koyeb.app/api/clients
 
   - Frontend code: https://github.com/nico-bt/frontend-car-rental/tree/main
